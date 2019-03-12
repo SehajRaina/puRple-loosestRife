@@ -14,11 +14,11 @@ output: html_document
 
 <br>
 
-###2.a) Dataset - 
+###2.a) Dataset - https://datadryad.org/resource/doi:10.5061/dryad.4fk53?fbclid=IwAR31jDBM0DmcN76f0uPiNXhdhSyACGjJFfPWT28UvL-EAtWH_GF8_-qfSb8
 
 <br>
 
-###2.b) Description - 
+###2.b) Description - Data from: Gene amplification of 5-enol-pyruvylshikimate-3-phosphate synthase in glyphosate-resistant Kochia scoparia. These results indicate increased EPSPS expression is a mechanism for glyphosate resistance in these K. scoparia populations.
 
 <br>
 
