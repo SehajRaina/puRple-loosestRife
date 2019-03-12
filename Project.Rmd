@@ -26,4 +26,4 @@ output: html_document
 
 <br>
 
-###4. Method - 
+###4. Method - We would study the phylogenic relationship amongst the sequences by using alignment functions and building distance matrices which can then be visualized in various ways. We will visualise the relationships through tree construction as well as clustering of similar species to look for any evident patterns. 
