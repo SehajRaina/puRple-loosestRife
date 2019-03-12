@@ -1,0 +1,29 @@
+---
+title: "Project"
+author: "PuRple LoosestRife"
+date: "March 12, 2019"
+output: html_document
+---
+
+
+#Week 8 GROUP Assignment
+
+<br><br>
+
+###1. GitHub Repo - https://github.com/SehajRaina/puRple-loosestRife.git
+
+<br>
+
+###2.a) Dataset - 
+
+<br>
+
+###2.b) Description - 
+
+<br>
+
+###3. Question - Based on the genetic relation between resistant individuals, does resistance evolve independently or was is spread from a few origins?
+
+<br>
+
+###4. Method - 
