@@ -1,0 +1,56 @@
+---
+title: "Project Description"
+author: "Hayley Brackenridge, Vivian Li, Sehaj Raina, and Minji Cho"
+date: '2019-03-12'
+output: html_document
+---
+
+# Preamble
+
+This markdown file contains the initial description of the group project for BIOL432 for the group puRple loosestRifes.
+
+# Assignment Description
+
+Identify a dataset to analyze (e.g. DNA sequences, gene expression profiles) using tools that you’ve learned in the course. 
+
+Think of 1 to 3 biological questions you can address with the data.
+
+## Proposed Data
+
+```{r}
+library(seqinr)
+dat1<- read.fasta("https://datadryad.org/bitstream/handle/10255/dryad.73383/transcripts.fa?sequence=1")
+```
+
+Description: Fasta file containing all loci and transcripts from de novo assembly of Kochia scoparia Illumina HiSeq data using Oases.
+
+```{r}
+dat2<- read.fasta("https://datadryad.org/bitstream/handle/10255/dryad.73384/AA_AB_AC_AD_AE_AF_01_02_33.fa?sequence=1")
+```
+
+Description: Fasta file containing a pseudomolecule for the Kochia scoparia de novo transcriptome. The single longest transcript for each locus was concantenated into a single pseudomolecule to be used for RNA-Seq alignments.
+
+```{r}
+dat3<- read.csv2("https://datadryad.org/bitstream/handle/10255/dryad.73385/AA_AB_AC_AD_AE_AF_01_02_33.gtf?sequence=1")
+```
+
+Description: GTF version 3 annotation file for the Fasta file containing a pseudomolecule for the Kochia scoparia de novo transcriptome. The single longest transcript for each locus was concantenated into a single pseudomolecule to be used for RNA-Seq alignments.
+
+```{r}
+dat4<- read.csv2("https://datadryad.org/bitstream/handle/10255/dryad.73386/AA_AB_AC_AD_AE_AF_01_02_33.gff3?sequence=1")
+```
+
+Description: GFF version 3 annotation for the Fasta file containing a pseudomolecule for the Kochia scoparia de novo transcriptome. The single longest transcript for each locus was concantenated into a single pseudomolecule to be used for RNA-Seq alignments.
+
+## Proposed Questions
+
+We would like to investigate whether herbicide resistance has evolved independently in each of these populations or has spread via gene flow. 
+
+We will do this by investigating the evolutionary relationship between populations. If populations are very genetically similar, it could be likely that resistance was spread via gene flow. If the poplations do not show evidence of gene flow (i.e. are very distinct) the probability of independent evolution of resistance would be more likely. This data could also be looked at over a geographical scale to assess the probability of pollen mediated gene flow between populations. This would provide more support for our potential conclusions. 
+
+If addressing this question with this dataset proves to be very difficult, we have another dataset to use as a backup. This data was used to specifically address the question we would like to address (i.e. did resistance evolve independently?)
+
+```{r}
+backupdat<- read.csv2("https://datadryad.org/bitstream/handle/10255/dryad.46386/Conyza_canadensis_microsat.txt?sequence=1", header=T, sep="\t")
+```
+
