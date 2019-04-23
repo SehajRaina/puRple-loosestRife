@@ -64,7 +64,7 @@ plotPCA(vsd, intgroup="ERA.library.id") + theme_bw() #PCA plot
 
 <br>
 
-#####The Figure 1 heat map shows us regions of higher and lower gene expression, specifically the vitellogenin (vit-) protein gene (C42D8.2) that is the precursor protein of egg yolk. However, there are too many stage classifications to clearly see differences amongst the main stages therefore we will categorize them further into 8 phenotypic stages in 3.a) and b). The Figure 2 PCA plot shows clusters of certain groups of stages however, there are too many stages making it difficult to categorize. The pc1 explains 44% of variance and pc2 explains 17% variation in expression.
+#####The Figure 1 heat map shows us regions of higher and lower gene expression, specifically the vitellogenin-2 (vit-2) protein gene (C42D8.2) that is the precursor protein of egg yolk. However, there are too many stage classifications to clearly see differences amongst the main stages therefore we will categorize them further into 8 phenotypic stages in 3.a) and b). The Figure 2 PCA plot shows clusters of certain groups of stages however, there are too many stages making it difficult to categorize. The pc1 explains 44% of variance and pc2 explains 17% variation in expression.
 
 <br><br>
 
@@ -126,7 +126,7 @@ plotPCA(vsd2, intgroup="ERA.library.id") + theme_bw()
 
 <br>
 
-#####The Figure 3 heat map shows us regions of higher and lower gene expression similar to Figure 1's heat map. The early embryo, late embryo, and the larval L1, L2 & L3 stages show a very low expression (regions of blue) of the vitellogenin protein gene (C42D8.2) which is a precursor protein of egg yolk. However, this gene is highly expressed in the L4 larval stage, young adult and adult stages. The Figure 4 PCA plot shows clusters of the stages. Here we see that the Adult, Young adult and L4 larval stage genes are clustered farther from the rest of the stages, showing a strong differentiation in the top20 genes. The Early and late embryo along with the L1, L2 and L3 larval stages are tightly clustered together, away from the L4 and adults/young adults. The pc1 explains 47% of variance and pc2 explains 16% variation in expression. 
+#####The Figure 3 heat map shows us regions of higher and lower gene expression similar to Figure 1's heat map. The early embryo, late embryo, and the larval L1, L2 & L3 stages show a very low expression (regions of blue) of the vitellogenin-2 protein gene (C42D8.2) which is a precursor protein of egg yolk. However, this gene is highly expressed in the L4 larval stage, young adult and adult stages. The Figure 4 PCA plot shows clusters of the stages. Here we see that the Adult, Young adult and L4 larval stage genes are clustered farther from the rest of the stages, showing a strong differentiation in the top20 genes. The Early and late embryo along with the L1, L2 and L3 larval stages are tightly clustered together, away from the L4 and adults/young adults. The pc1 explains 47% of variance and pc2 explains 16% variation in expression. 
 
 <br><br><br>
 
