@@ -1,12 +1,17 @@
 ---
 title: "GroupProject"
-author: "Sehaj Raina, " #ADD ALL NAMES
+author: "Sehaj Raina, Hayley Brackenridge, Minji Cho, Vivian Li"
 date: "April 22, 2019"
 output: html_document
 ---
 <br><br>
 
-##INTRO:
+##INTRO: We will be looking at the following datset from this link: (http://bowtie-bio.sourceforge.net/recount/?fbclid=IwAR18Rd0buwg7OMb0XP7VuxBKXfQtWIOHHlIBRPK-ZrrkbyR_fjPrzN1sekw) containing *C. elegans* DNA from different developmental stages. With this data we will address the following questions:
+
+<br>
+
+###1. What genes are differentially expressed at different developmental stages in *C. elegans*
+###2. Based on the most differentiated gene across the developmental stages, is there homology in that gene amongst different species * Note: this will require NCBI BLAST search and the construction of a phylogentic tree
 
 <br><br>
 
@@ -130,16 +135,106 @@ plotPCA(vsd2, intgroup="ERA.library.id") + theme_bw()
 
 <br><br><br>
 
-##PART 1:Phylogenic Analysis
+##PART 2:Phylogenic Analysis
 
 <br><br>
 
 1. Load packages
 ```{r}
-
+suppressMessages(library(BiocManager))
+suppressMessages(library(genbankr))
+suppressMessages(library(rentrez))
+suppressMessages(library(annotate))
+suppressMessages(library(ape))
+suppressMessages(library(ggplot2))
+suppressMessages(library(reshape2))
+suppressMessages(library(ggtree))
 ```
 
+<br>
 
+2. Load Fasta file
+```{r}
+install.packages("readr") 
+library(readr)
+mystring <- read_file("data/sequence.fasta.txt")
+```
 
+<br>
+
+3. Remove header and other characters
+```{r}
+Header1<-gsub(".*X","", mystring) 
+seq<-gsub("[\n]+","", Header1)
+```
+
+<br>
+  
+4. Run BLAST search and re-format data 
+```{r}
+#make new dataframe with 2 new columns that have the accession ID and HIT sequence
+UnknownBLAST<-blastSequences(paste(seq), as="data.frame",
+                             hitListSize = 40, timeout = 180, database="nr",program="blastn") #use blastn for nucleotides
+
+HitsDF<-data.frame(ID=UnknownBLAST$Hit_accession,#only take sequences that align
+                   Seq=UnknownBLAST$Hsp_hseq, stringsAsFactors = FALSE)
+
+HitsDNA<-sapply(HitsDF$Seq, strsplit, split="") #seperates sequences into individual base pairs (new column for each basepair)
+
+names(HitsDNA)<-paste(1:nrow(HitsDF), HitsDF$ID, sep="_") #Add accession ID to remove repeats 
+
+HitsDNA<-as.DNAbin(HitsDNA) #final format before alignment 
+```
+
+<br>
+  
+5. Gap lengths
+```{r}
+
+SeqLen<-as.numeric(lapply(HitsDNA, length)) #check to see relative distribution of gap lengths (may need to remove some for better alignment)
+
+qplot(SeqLen, xlab="Sequence Length (Nucleotides)", ylab="Gap Length (Nucleotides)", main="Distribution of Gap Lengths")
+```
+
+### __Figure 5.__ *Gap Lengths Distribution*
+#####From the gap length analysis, we can see that the distribution is fairly even and therefore no sequences will be excluded from the alignment.
+
+<br>
+  
+6. Alignment of HIT DNA sequences from BLAST search 
+```{r}
+AlignDNA<-muscle(HitsDNA, quiet=F) #search MUSCLE aligner
+
+checkAlignment(AlignDNA) #show alignment plots
+```
+
+### __Figure 6.__ *Alignment Plots*
+#####For the 56 HIT sequences:
+#####1. The image of the alignment shows us that at each sequence position, around half have a good alignment, however the sequences towards the bottom seem to align only at a specific location.
+#####2. The Shannon index (H) for each sequence position is higher because of the high diversity of nucleotides across the sequence and this could be due to the group of sequences that are only aligning at a specific region.
+#####3. The gap lengths are not too wide (most have gap lengths of 1).
+#####4. The number of observed bases along the sequences are mostly consistent at 3.0 with some 4.0 Number of Observed Bases, ideally, a good alignment would show most sequences consistent at 1.0 number of observed bases. 
+#####Therefore, this series of diagnostics show us a moderate alignment of our 56 HIT sequences from the nucleotide BLAST search of our unknown DNA sequence. 
+
+<br>
+
+7. Adding Species names
+```{r}
+Subset<-read.GenBank(UnknownBLAST$Hit_accession)
+HITseqNames<-attr(Subset, "species")
+print(HITseqNames[1])
+```
+
+<br>
+
+8. Convert alignment to a Distance Matrix and Visualize
+```{r}
+DnaDM1<- dist.dna(AlignDNA, model="K80")
+DnaDMmat1<-as.matrix(DnaDM1)
+
+Dat1<-melt(DnaDMmat1)
+ggplot(data=Dat1, aes(x=Var1, y=Var2, fill=value)) + 
+  geom_tile() +scale_fill_gradientn(colours=c("white", "blue", "green", "red"))
+```
 
 
