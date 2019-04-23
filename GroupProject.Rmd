@@ -4,3 +4,142 @@ author: "Sehaj Raina, " #ADD ALL NAMES
 date: "April 22, 2019"
 output: html_document
 ---
+<br><br>
+
+##INTRO:
+
+<br><br>
+
+##PART 1:Transcriptome Analysis
+
+<br><br>
+
+1. Load packages
+```{r}
+suppressMessages(library(BiocManager))
+install("IRanges")
+BiocManager::install("DESeq2") 
+BiocManager::install("pheatmap") 
+suppressMessages(library(DESeq2))
+suppressMessages(library(dplyr))
+suppressMessages(library(pheatmap))
+suppressMessages(library(ggplot2))
+```
+
+<br>
+
+2.a) Analysis - ALL STAGES
+```{r}
+load("data/modencodeworm_eset.RData") 
+
+expr_se<-SummarizedExperiment(exprs(modencodeworm.eset))
+colData(expr_se)<-DataFrame(pData(modencodeworm.eset)) 
+
+expr_de<- DESeqDataSet(expr_se, design= ~ ERA.library.id)
+de_results<- DESeq(expr_de) 
+DEdat<-results(de_results)
+```
+
+<br>
+
+2.b) Visualization - ALL STAGES
+```{r}
+vsd<-vst(de_results, blind=F)
+ntd<-normTransform(de_results) 
+
+Top20<-order(rowMeans
+             (counts(de_results, normalized=TRUE)),
+             decreasing=TRUE) [1:20]
+
+DEdat[Top20,] 
+
+annot_df<-data.frame(ERA.library.id=colData(expr_se)$ERA.library.id,
+                     row.names=row.names(colData(expr_se)))
+
+pheatmap(assay(ntd) [Top20,], annotation_col = annot_df) #heat map 
+plotPCA(vsd, intgroup="ERA.library.id") + theme_bw() #PCA plot
+```
+
+### __Figure 1.__ *All Stages Heat Map* and __Figure 2.__ *All Stages PCA Plot*
+
+<br>
+
+#####The Figure 1 heat map shows us regions of higher and lower gene expression, specifically the vitellogenin (vit-) protein gene (C42D8.2) that is the precursor protein of egg yolk. However, there are too many stage classifications to clearly see differences amongst the main stages therefore we will categorize them further into 8 phenotypic stages in 3.a) and b). The Figure 2 PCA plot shows clusters of certain groups of stages however, there are too many stages making it difficult to categorize. The pc1 explains 44% of variance and pc2 explains 17% variation in expression.
+
+<br><br>
+
+3.a) Analysis - ClASSIFY INTO 8 PHENOTYPIC STAGES
+```{r}
+data2<-pData(modencodeworm.eset)
+
+#categorize stages into 8 
+data2$ERA.library.id<-as.factor(gsub(".*L1.*", "L1", data2$ERA.library.id)) 
+data2$ERA.library.id<-as.factor(gsub(".*L2.*", "L2", data2$ERA.library.id))
+data2$ERA.library.id<-as.factor(gsub(".*L3.*", "L3", data2$ERA.library.id))
+data2$ERA.library.id<-as.factor(gsub(".*L4.*", "L4", data2$ERA.library.id))
+data2$ERA.library.id<-as.factor(gsub(".*Adult.*", "YoungAdult", data2$ERA.library.id))
+data2$ERA.library.id<-as.factor(gsub(".*YA.*", "YoungAdult", data2$ERA.library.id))
+data2$ERA.library.id<-as.factor(gsub(".*Yad.*", "YoungAdult", data2$ERA.library.id))
+
+data2$ERA.library.id<-as.factor(gsub(".*Dauer.*", "L3", data2$ERA.library.id))
+data2$ERA.library.id<-as.factor(gsub(".*EE.*", "EarlyEmbryo", data2$ERA.library.id))
+data2$ERA.library.id<-as.factor(gsub(".*LE.*", "LateEmbryo", data2$ERA.library.id))
+data2$ERA.library.id<-as.factor(gsub(".*Males.*", "LateEmbryo", data2$ERA.library.id))
+
+
+data2$ERA.library.id<-as.factor(gsub(".*Smac.*", "Adult", data2$ERA.library.id))
+data2$ERA.library.id<-as.factor(gsub(".*DC.*", "Adult", data2$ERA.library.id))
+data2$ERA.library.id<-as.factor(gsub(".*PL.*", "Adult", data2$ERA.library.id))
+data2$ERA.library.id<-as.factor(gsub(".*EF.*", "Adult", data2$ERA.library.id))
+data2$ERA.library.id<-as.factor(gsub(".*Harpo.*", "Adult", data2$ERA.library.id))
+
+#analysis
+expr_se2<-SummarizedExperiment(exprs(modencodeworm.eset))
+colData(expr_se2)<-DataFrame(data2)
+expr_de2<- DESeqDataSet(expr_se2, design= ~ ERA.library.id) 
+de_results2<- DESeq(expr_de2) 
+DEdat2<-results(de_results2)
+```
+
+<br><br>
+
+3.b) Visualization - 8 PHENOTYPIC STAGES
+```{r}
+vsd2<-vst(de_results2, blind=F)
+ntd2<-normTransform(de_results2) 
+
+Top20_2<-order(rowMeans
+               (counts(de_results2, normalized=TRUE)),
+               decreasing=TRUE) [1:20]
+
+DEdat2[Top20_2,] 
+
+annot_df2<-data.frame(ERA.library.id=colData(expr_se2)$ERA.library.id,
+                      row.names=row.names(colData(expr_se2)))
+
+pheatmap(assay(ntd2) [Top20_2,], annotation_col = annot_df2) #heat map with annotation
+
+plotPCA(vsd2, intgroup="ERA.library.id") + theme_bw()
+```
+
+### __Figure 3.__ *8 Stages Heat Map* and __Figure 4.__ *8 Stages PCA Plot*
+
+<br>
+
+#####The Figure 3 heat map shows us regions of higher and lower gene expression similar to Figure 1's heat map. The early embryo, late embryo, and the larval L1, L2 & L3 stages show a very low expression (regions of blue) of the vitellogenin protein gene (C42D8.2) which is a precursor protein of egg yolk. However, this gene is highly expressed in the L4 larval stage, young adult and adult stages. The Figure 4 PCA plot shows clusters of the stages. Here we see that the Adult, Young adult and L4 larval stage genes are clustered farther from the rest of the stages, showing a strong differentiation in the top20 genes. The Early and late embryo along with the L1, L2 and L3 larval stages are tightly clustered together, away from the L4 and adults/young adults. The pc1 explains 47% of variance and pc2 explains 16% variation in expression. 
+
+<br><br><br>
+
+##PART 1:Phylogenic Analysis
+
+<br><br>
+
+1. Load packages
+```{r}
+
+```
+
+
+
+
+
