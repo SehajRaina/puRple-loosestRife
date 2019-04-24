@@ -1,6 +1,6 @@
 ---
 title: "GroupProject"
-author: "Sehaj Raina, Hayley Brackenridge, Minji Cho, Vivian Li"
+author: "Sehaj Raina, Hayley Brackenridge, Minji Kweon, Vivian Li"
 date: "April 22, 2019"
 output: html_document
 ---
@@ -159,6 +159,7 @@ install.packages("readr")
 library(readr)
 mystring <- read_file("data/sequence.fasta.txt")
 ```
+The sequence of the gene Vitellogenin-2 was retrived from NCBI. The accession code is  NM_001129645 and the gene is 4677 base pairs long. 
 
 <br>
 
@@ -239,17 +240,20 @@ ggplot(data=Dat1, aes(x=Var1, y=Var2, fill=value)) +
 ```
 
 ### __Figure 7.__ *Dixtance matrix plot*
-##### The distance matrix plot of the HIT sequences. Almost a half of sequences are identical. These identical genes are all part of *Caenorhabditis remanei* strain VX0007 VIT-2 (vit-2) gene. 
+##### The distance matrix plot of the HIT sequences. Almost a half of the sequences are identical. These identical sequenes are all part of *Caenorhabditis remanei* strain VX0007 VIT-2 (vit-2) gene. 12,11, 1-4. The original sequence of interest is 13_NM_001129645. Some of the similar sequences includes FO080659,X56212 and NM_076467. These sequences are all either directly related to the vit-2 gene or it's a sequence from a strain from the X chromosom, all three of found in *C.elegans *.
+
 
 9. Tree building 
 
 Using the Neighbour-Joining approach
 ```{r}
 treenj<-nj(DnaDM1)
-ggtree(treenj,layout="rectangular")+geom_tiplab()
+ggtree(treenj,layout="rectangular")+geom_tiplab(size=3)+
+  geom_strip(13,5,barsize=2,colour="red")+
+  
 ```
 ### __Figure 8.__ *Neighbour joining tree*
-##### The phylogenetic tree of HIT sequences. Just as illustrated from the distance matrix plot, the sequences from *Caenorhabditis remanei* VIT-2 gene cluster together. 
+##### The phylogenetic tree of HIT sequences. Just as illustrated from the distance matrix plot, the sequences from *Caenorhabditis remanei* VIT-2 gene cluster together. The original sequence is marked by the red bar. 
 
 
 
@@ -257,5 +261,5 @@ ggtree(treenj,layout="rectangular")+geom_tiplab()
 Using the Minimum Evolution approah
 ```{r}
 treeme<-fastme.bal(DnaDM1)
-ggtree(treeme,layout="rectangular")+geom_tiplab()
+ggtree(treeme,layout="rectangular")+geom_tiplab(size=3)
 ```
