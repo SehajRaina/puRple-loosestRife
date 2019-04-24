@@ -229,12 +229,33 @@ print(HITseqNames[1])
 
 8. Convert alignment to a Distance Matrix and Visualize
 ```{r}
-DnaDM1<- dist.dna(AlignDNA, model="K80")
+DnaDM1<- dist.gene(AlignDNA,method="pairwise")
 DnaDMmat1<-as.matrix(DnaDM1)
-
 Dat1<-melt(DnaDMmat1)
+
 ggplot(data=Dat1, aes(x=Var1, y=Var2, fill=value)) + 
-  geom_tile() +scale_fill_gradientn(colours=c("white", "blue", "green", "red"))
+  geom_tile() +scale_fill_gradientn(colours=c("white", "blue", "green", "red"))+
+  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
 ```
 
+### __Figure 7.__ *Dixtance matrix plot*
+##### The distance matrix plot of the HIT sequences. Almost a half of sequences are identical. These identical genes are all part of *Caenorhabditis remanei* strain VX0007 VIT-2 (vit-2) gene. 
 
+9. Tree building 
+
+Using the Neighbour-Joining approach
+```{r}
+treenj<-nj(DnaDM1)
+ggtree(treenj,layout="rectangular")+geom_tiplab()
+```
+### __Figure 8.__ *Neighbour joining tree*
+##### The phylogenetic tree of HIT sequences. Just as illustrated from the distance matrix plot, the sequences from *Caenorhabditis remanei* VIT-2 gene cluster together. 
+
+
+
+
+Using the Minimum Evolution approah
+```{r}
+treeme<-fastme.bal(DnaDM1)
+ggtree(treeme,layout="rectangular")+geom_tiplab()
+```
