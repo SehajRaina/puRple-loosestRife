@@ -6,20 +6,23 @@ output: html_document
 ---
 <br><br>
 
-##INTRO: We will be looking at the following datset from this link: (http://bowtie-bio.sourceforge.net/recount/?fbclid=IwAR18Rd0buwg7OMb0XP7VuxBKXfQtWIOHHlIBRPK-ZrrkbyR_fjPrzN1sekw) containing *C. elegans* DNA from different developmental stages. With this data we will address the following questions:
+#INTRO: 
+
+We will be looking at the following datset from this link: (http://bowtie-bio.sourceforge.net/recount/?fbclid=IwAR18Rd0buwg7OMb0XP7VuxBKXfQtWIOHHlIBRPK-ZrrkbyR_fjPrzN1sekw) containing *C. elegans* DNA from different developmental stages. With this data we will address the following questions:
 
 <br>
 
-###1. What genes are differentially expressed at different developmental stages in *C. elegans*
-###2. Based on the most differentiated gene across the developmental stages, is there homology in that gene amongst different species * Note: this will require NCBI BLAST search and the construction of a phylogentic tree
+**1. What genes are differentially expressed at different developmental stages in *C. elegans* **
+
+**2. Based on the most differentiated gene across the developmental stages, is there homology in that gene amongst different species *Note: this will require NCBI BLAST search and the construction of a phylogentic tree* **
 
 <br><br>
 
-##PART 1:Transcriptome Analysis
+#PART 1:Transcriptome Analysis
 
 <br><br>
 
-1. Load packages
+##1. Load packages
 ```{r}
 suppressMessages(library(BiocManager))
 install("IRanges")
@@ -33,7 +36,7 @@ suppressMessages(library(ggplot2))
 
 <br>
 
-2.a) Analysis - ALL STAGES
+##2.a) Analysis - ALL STAGES
 ```{r}
 load("data/modencodeworm_eset.RData") 
 
@@ -47,7 +50,7 @@ DEdat<-results(de_results)
 
 <br>
 
-2.b) Visualization - ALL STAGES
+##2.b) Visualization - ALL STAGES
 ```{r}
 vsd<-vst(de_results, blind=F)
 ntd<-normTransform(de_results) 
@@ -65,15 +68,15 @@ pheatmap(assay(ntd) [Top20,], annotation_col = annot_df) #heat map
 plotPCA(vsd, intgroup="ERA.library.id") + theme_bw() #PCA plot
 ```
 
-### __Figure 1.__ *All Stages Heat Map* and __Figure 2.__ *All Stages PCA Plot*
+#### *Figure 1.* **All Stages Heat Map** and *Figure 2.* **All Stages PCA Plot**
 
 <br>
 
-#####The Figure 1 heat map shows us regions of higher and lower gene expression, specifically the vitellogenin-2 (vit-2) protein gene (C42D8.2) that is the precursor protein of egg yolk. However, there are too many stage classifications to clearly see differences amongst the main stages therefore we will categorize them further into 8 phenotypic stages in 3.a) and b). The Figure 2 PCA plot shows clusters of certain groups of stages however, there are too many stages making it difficult to categorize. The pc1 explains 44% of variance and pc2 explains 17% variation in expression.
+The Figure 1 heat map shows us regions of higher and lower gene expression, specifically the vitellogenin-2 (vit-2) protein gene (C42D8.2) that is the precursor protein of egg yolk. However, there are too many stage classifications to clearly see differences amongst the main stages therefore we will categorize them further into 8 phenotypic stages in 3.a) and b). The Figure 2 PCA plot shows clusters of certain groups of stages however, there are too many stages making it difficult to categorize. The pc1 explains 44% of variance and pc2 explains 17% variation in expression.
 
 <br><br>
 
-3.a) Analysis - ClASSIFY INTO 8 PHENOTYPIC STAGES
+##3.a) Analysis - ClASSIFY INTO 8 PHENOTYPIC STAGES
 ```{r}
 data2<-pData(modencodeworm.eset)
 
@@ -108,7 +111,7 @@ DEdat2<-results(de_results2)
 
 <br><br>
 
-3.b) Visualization - 8 PHENOTYPIC STAGES
+##3.b) Visualization - 8 PHENOTYPIC STAGES
 ```{r}
 vsd2<-vst(de_results2, blind=F)
 ntd2<-normTransform(de_results2) 
@@ -127,19 +130,19 @@ pheatmap(assay(ntd2) [Top20_2,], annotation_col = annot_df2) #heat map with anno
 plotPCA(vsd2, intgroup="ERA.library.id") + theme_bw()
 ```
 
-### __Figure 3.__ *8 Stages Heat Map* and __Figure 4.__ *8 Stages PCA Plot*
+#### *Figure 3.* **8 Stages Heat Map** and *Figure 4.* **8 Stages PCA Plot**
 
 <br>
 
-#####The Figure 3 heat map shows us regions of higher and lower gene expression similar to Figure 1's heat map. The early embryo, late embryo, and the larval L1, L2 & L3 stages show a very low expression (regions of blue) of the vitellogenin-2 protein gene (C42D8.2) which is a precursor protein of egg yolk. However, this gene is highly expressed in the L4 larval stage, young adult and adult stages. The Figure 4 PCA plot shows clusters of the stages. Here we see that the Adult, Young adult and L4 larval stage genes are clustered farther from the rest of the stages, showing a strong differentiation in the top20 genes. The Early and late embryo along with the L1, L2 and L3 larval stages are tightly clustered together, away from the L4 and adults/young adults. The pc1 explains 47% of variance and pc2 explains 16% variation in expression. 
+The Figure 3 heat map shows us regions of higher and lower gene expression similar to Figure 1's heat map. The early embryo, late embryo, and the larval L1, L2 & L3 stages show a very low expression (regions of blue) of the vitellogenin-2 protein gene (C42D8.2) which is a precursor protein of egg yolk. However, this gene is highly expressed in the L4 larval stage, young adult and adult stages. The Figure 4 PCA plot shows clusters of the stages. Here we see that the Adult, Young adult and L4 larval stage genes are clustered farther from the rest of the stages, showing a strong differentiation in the top20 genes. The Early and late embryo along with the L1, L2 and L3 larval stages are tightly clustered together, away from the L4 and adults/young adults. The pc1 explains 47% of variance and pc2 explains 16% variation in expression. 
 
 <br><br><br>
 
-##PART 2:Phylogenic Analysis
+#PART 2:Phylogenic Analysis
 
 <br><br>
 
-1. Load packages
+##1. Load packages
 ```{r}
 suppressMessages(library(BiocManager))
 suppressMessages(library(genbankr))
@@ -153,7 +156,7 @@ suppressMessages(library(ggtree))
 
 <br>
 
-2. Load Fasta file
+##2. Load Fasta file
 ```{r}
 install.packages("readr") 
 library(readr)
@@ -163,7 +166,7 @@ The sequence of the gene Vitellogenin-2 was retrived from NCBI. The accession co
 
 <br>
 
-3. Remove header and other characters
+##3. Remove header and other characters
 ```{r}
 Header1<-gsub(".*X","", mystring) 
 seq<-gsub("[\n]+","", Header1)
@@ -171,7 +174,7 @@ seq<-gsub("[\n]+","", Header1)
 
 <br>
   
-4. Run BLAST search and re-format data 
+##4. Run BLAST search and re-format data 
 ```{r}
 #make new dataframe with 2 new columns that have the accession ID and HIT sequence
 UnknownBLAST<-blastSequences(paste(seq), as="data.frame",
@@ -189,7 +192,7 @@ HitsDNA<-as.DNAbin(HitsDNA) #final format before alignment
 
 <br>
   
-5. Gap lengths
+##5. Gap lengths
 ```{r}
 
 SeqLen<-as.numeric(lapply(HitsDNA, length)) #check to see relative distribution of gap lengths (may need to remove some for better alignment)
@@ -197,29 +200,32 @@ SeqLen<-as.numeric(lapply(HitsDNA, length)) #check to see relative distribution 
 qplot(SeqLen, xlab="Sequence Length (Nucleotides)", ylab="Gap Length (Nucleotides)", main="Distribution of Gap Lengths")
 ```
 
-### __Figure 5.__ *Gap Lengths Distribution*
-#####From the gap length analysis, we can see that the distribution is fairly even and therefore no sequences will be excluded from the alignment.
+#### *Figure 5.* **Gap Lengths Distribution**
+
+From the gap length analysis, we can see that the distribution is fairly even and therefore no sequences will be excluded from the alignment.
 
 <br>
   
-6. Alignment of HIT DNA sequences from BLAST search 
+##6. Alignment of HIT DNA sequences from BLAST search 
 ```{r}
 AlignDNA<-muscle(HitsDNA, quiet=F) #search MUSCLE aligner
 
 checkAlignment(AlignDNA) #show alignment plots
 ```
 
-### __Figure 6.__ *Alignment Plots*
-#####For the 56 HIT sequences:
-#####1. The image of the alignment shows us that at each sequence position, around half have a good alignment, however the sequences towards the bottom seem to align only at a specific location.
-#####2. The Shannon index (H) for each sequence position is higher because of the high diversity of nucleotides across the sequence and this could be due to the group of sequences that are only aligning at a specific region.
-#####3. The gap lengths are not too wide (most have gap lengths of 1).
-#####4. The number of observed bases along the sequences are mostly consistent at 3.0 with some 4.0 Number of Observed Bases, ideally, a good alignment would show most sequences consistent at 1.0 number of observed bases. 
-#####Therefore, this series of diagnostics show us a moderate alignment of our 56 HIT sequences from the nucleotide BLAST search of our unknown DNA sequence. 
+#### *Figure 6.* **Alignment Plots**
 
-<br>
+For the 56 HIT sequences:
 
-7. Adding Species names
+  1. The image of the alignment shows us that at each sequence position, around half have a good alignment, however the sequences towards the bottom seem to align only at a specific location.
+  2. The Shannon index (H) for each sequence position is higher because of the high diversity of nucleotides across the sequence and this could be due to the group of sequences that are only aligning at a specific region.
+  3. The gap lengths are not too wide (most have gap lengths of 1).
+  4. The number of observed bases along the sequences are mostly consistent at 3.0 with some 4.0 Number of Observed Bases, ideally, a good alignment would show most sequences consistent at 1.0 number of observed bases. 
+
+Therefore, this series of diagnostics show us a moderate alignment of our 56 HIT sequences from the nucleotide BLAST search of our unknown DNA sequence. 
+
+
+##7. Adding Species names
 ```{r}
 Subset<-read.GenBank(UnknownBLAST$Hit_accession)
 HITseqNames<-attr(Subset, "species")
@@ -228,7 +234,7 @@ print(HITseqNames[1])
 
 <br>
 
-8. Convert alignment to a Distance Matrix and Visualize
+##8. Convert alignment to a Distance Matrix and Visualize
 ```{r}
 DnaDM1<- dist.gene(AlignDNA,method="pairwise")
 DnaDMmat1<-as.matrix(DnaDM1)
@@ -239,27 +245,42 @@ ggplot(data=Dat1, aes(x=Var1, y=Var2, fill=value)) +
   theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
 ```
 
-### __Figure 7.__ *Dixtance matrix plot*
-##### The distance matrix plot of the HIT sequences. Almost a half of the sequences are identical. These identical sequenes are all part of *Caenorhabditis remanei* strain VX0007 VIT-2 (vit-2) gene. 12,11, 1-4. The original sequence of interest is 13_NM_001129645. Some of the similar sequences includes FO080659,X56212 and NM_076467. These sequences are all either directly related to the vit-2 gene or it's a sequence from a strain from the X chromosom, all three of them found in *C.elegans *.
+#### *Figure 7.* **Dixtance matrix plot**
+
+The distance matrix plot of the HIT sequences. Almost a half of the sequences are identical. These identical sequenes are all part of *Caenorhabditis remanei* strain VX0007 VIT-2 (vit-2) gene. 12,11, 1-4. The original sequence of interest is 13_NM_001129645. Some of the similar sequences includes FO080659,X56212 and NM_076467. These sequences are all either directly related to the vit-2 gene or it's a sequence from a strain from the X chromosom, all three of them found in *C.elegans *.
 
 
-9. Tree building 
+##9. Tree building 
 
-Using the Neighbour-Joining approach
+###Using the Neighbour-Joining approach
 ```{r}
 treenj<-nj(DnaDM1)
 ggtree(treenj,layout="rectangular")+geom_tiplab(size=3)+
-  geom_strip(13,5,barsize=2,colour="red")+
+  geom_strip(13,5,barsize=2,colour="red")
   
 ```
-### __Figure 8.__ *Neighbour joining tree*
-##### The phylogenetic tree of HIT sequences. Just as illustrated from the distance matrix plot, the sequences from *Caenorhabditis remanei* VIT-2 gene cluster together. The original sequence is marked by the red bar. 
+#### *Figure 8.* **Neighbour joining tree**
+
+The phylogenetic tree of HIT sequences. Just as illustrated from the distance matrix plot, the sequences from *Caenorhabditis remanei* VIT-2 gene cluster together. The original sequence is marked by the red bar. 
 
 
-
-
-Using the Minimum Evolution approah
+###Using the Minimum Evolution approah
 ```{r}
 treeme<-fastme.bal(DnaDM1)
 ggtree(treeme,layout="rectangular")+geom_tiplab(size=3)
 ```
+#### *Figure 9.* **Minimum evolution tree**
+
+The phylogenetic tree of HIT sequences using minimum evolution method. The tree is very different from that generated using a neighbour joining method. Despite the obvious differences, general patterns of clustering are consistent between the two trees.
+
+#Conclusion
+
+This analysis addressed the following questions:  A) What genes are differentially expressed at different developmental stages in *C. elegans*; and B) Based on the most differentiated gene across the developmental stages, is there homology in that gene amongst different species?
+
+We found that most genes were highly expressed throughout development except vitellogenin-2 (vit-2) protein gene (C42D8.2) which is the precursor protein of egg yolk (Figure 3). This gene had low expression in the larval stages. All other genes showed minimal variation in expression between developmental stages, but there was enough of a trend to create clusters of developmental stages in a PCA plot with 47% variance on the x axis and 16% variance on the y axis (Figure 4). 
+
+Multiple alignment showed high variability between species in the first half of the sequence hits (Figure 6.1), suggesting there is not a conserved domain. However, the last half of squence hits showed a small, highly conserved domain but no common basepairs surrounding it. A heat map shows similar results with the first sequences showing lots of variation and the last sequences being highly conserved (Figure 7). 
+
+A phylogenetic tree of these BLAST hits shows clustering of the sequences from *Caenorhabditis remanei* VIT-2 gene. This result was mostly consistent between both the neighbour joining and minimum evolution methods of tree creation. Although there is some differences between the two, they show almost identical orders of relation with different branch lengths. The species with highly conserved sequences are monophyletic with little evolutionary distance between them.
+
+In conclusion, the genes analyzed in *C. elegans* show expression patterns consistent with their stage of development. These genes are not highly conserved among other species. Therefore, they are likely specifically required for development in *C. elegans*. 
