@@ -240,7 +240,7 @@ ggplot(data=Dat1, aes(x=Var1, y=Var2, fill=value)) +
 ```
 
 ### __Figure 7.__ *Dixtance matrix plot*
-##### The distance matrix plot of the HIT sequences. Almost a half of the sequences are identical. These identical sequenes are all part of *Caenorhabditis remanei* strain VX0007 VIT-2 (vit-2) gene. 12,11, 1-4. The original sequence of interest is 13_NM_001129645. Some of the similar sequences includes FO080659,X56212 and NM_076467. These sequences are all either directly related to the vit-2 gene or it's a sequence from a strain from the X chromosom, all three of found in *C.elegans *.
+##### The distance matrix plot of the HIT sequences. Almost a half of the sequences are identical. These identical sequenes are all part of *Caenorhabditis remanei* strain VX0007 VIT-2 (vit-2) gene. 12,11, 1-4. The original sequence of interest is 13_NM_001129645. Some of the similar sequences includes FO080659,X56212 and NM_076467. These sequences are all either directly related to the vit-2 gene or it's a sequence from a strain from the X chromosom, all three of them found in *C.elegans *.
 
 
 9. Tree building 
