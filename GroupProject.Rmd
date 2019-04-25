@@ -76,7 +76,7 @@ The Figure 1 heat map shows us regions of higher and lower gene expression, spec
 
 <br><br>
 
-##3.a) Analysis - ClASSIFY INTO 8 PHENOTYPIC STAGES
+##3.a) Analysis - CLASSIFY INTO 8 PHENOTYPIC STAGES
 ```{r}
 data2<-pData(modencodeworm.eset)
 
@@ -158,7 +158,7 @@ suppressMessages(library(ggtree))
 
 ##2. Load Fasta file
 ```{r}
-install.packages("readr") 
+install.packages("readr",repos = "http://cran.us.r-project.org")
 library(readr)
 mystring <- read_file("data/sequence.fasta.txt")
 ```
@@ -264,12 +264,13 @@ groupOTU(njt,os)+aes(color=group) + geom_tiplab(size=3) + scale_color_manual(val
 The phylogenetic tree of HIT sequences. Just as illustrated from the distance matrix plot, the sequences from *Caenorhabditis remanei* VIT-2 gene cluster together whereas the *C. elegans* sequences are less clustered and have more sequence varition. The original sequence (13) and the three most similar sequences (1, 11, 12) are in red. 
 
 
-##10. Tree building using the Minimum Evolution approah
+##10. Tree building using the Minimum Evolution approach
 ```{r}
 treeme<-fastme.bal(DnaDM1)
 met<-ggtree(treeme)
 groupOTU(met,os)+aes(color=group) + geom_tiplab(size=3) + scale_color_manual(values=c("black", "firebrick"))
 ```
+
 #### *Figure 9.* **Minimum evolution tree**
 
 The phylogenetic tree of HIT sequences using minimum evolution method. The tree looks very different from that generated using a neighbour joining method. Despite the formatting differences, general patterns of clustering are consistent between the two trees. As above, the original sequence (13) and three most similar sequences (1, 11, 12) are in red. 
