@@ -252,26 +252,29 @@ The distance matrix plot of the HIT sequences. Almost a half of the sequences ar
 
 ##9. Tree building 
 
+
 ###Using the Neighbour-Joining approach
 ```{r}
 treenj<-nj(DnaDM1)
-ggtree(treenj,layout="rectangular")+geom_tiplab(size=3)+
-  geom_strip(13,5,barsize=2,colour="red")
-  
+os<-c("13_NM_001129645","11_X56212","12_NM_076467","1_FO080659")
+njt<-ggtree(treenj)
+groupOTU(njt,os)+aes(color=group) + geom_tiplab(size=3) + scale_color_manual(values=c("black", "firebrick"))
 ```
+
 #### *Figure 8.* **Neighbour joining tree**
 
-The phylogenetic tree of HIT sequences. Just as illustrated from the distance matrix plot, the sequences from *Caenorhabditis remanei* VIT-2 gene cluster together. The original sequence is marked by the red bar. 
+The phylogenetic tree of HIT sequences. Just as illustrated from the distance matrix plot, the sequences from *Caenorhabditis remanei* VIT-2 gene cluster together. The original sequence (13) and the three most similar sequences (1, 11, 12) are in red. 
 
 
 ###Using the Minimum Evolution approah
 ```{r}
 treeme<-fastme.bal(DnaDM1)
-ggtree(treeme,layout="rectangular")+geom_tiplab(size=3)
+met<-ggtree(treeme)
+groupOTU(met,os)+aes(color=group) + geom_tiplab(size=3) + scale_color_manual(values=c("black", "firebrick"))
 ```
 #### *Figure 9.* **Minimum evolution tree**
 
-The phylogenetic tree of HIT sequences using minimum evolution method. The tree is very different from that generated using a neighbour joining method. Despite the obvious differences, general patterns of clustering are consistent between the two trees.
+The phylogenetic tree of HIT sequences using minimum evolution method. The tree looks very different from that generated using a neighbour joining method. Despite the formatting differences, general patterns of clustering are consistent between the two trees. As above, the original sequence (13) and three most similar sequences (1, 11, 12) are in red. 
 
 #Conclusion
 
