@@ -136,7 +136,7 @@ plotPCA(vsd2, intgroup="ERA.library.id") + theme_bw()
 
 The Figure 3 heat map shows us regions of higher and lower gene expression similar to Figure 1's heat map. The early embryo, late embryo, and the larval L1, L2 & L3 stages show a very low expression (regions of blue) of the vitellogenin-2 protein gene (C42D8.2) which is a precursor protein of egg yolk. However, this gene is highly expressed in the L4 larval stage, young adult and adult stages. The Figure 4 PCA plot shows clusters of the stages. Here we see that the Adult, Young adult and L4 larval stage genes are clustered farther from the rest of the stages, showing a strong differentiation in the top20 genes. The Early and late embryo along with the L1, L2 and L3 larval stages are tightly clustered together, away from the L4 and adults/young adults. The pc1 explains 47% of variance and pc2 explains 16% variation in expression. 
 
-<br><br><br>
+<br> <br> <br>
 
 #PART 2:Phylogenic Analysis
 
@@ -247,13 +247,11 @@ ggplot(data=Dat1, aes(x=Var1, y=Var2, fill=value)) +
 
 #### *Figure 7.* **Dixtance matrix plot**
 
-The distance matrix plot of the HIT sequences. Almost a half of the sequences are identical. These identical sequenes are all part of *Caenorhabditis remanei* strain VX0007 VIT-2 (vit-2) gene. 12,11, 1-4. The original sequence of interest is 13_NM_001129645. Some of the similar sequences includes FO080659,X56212 and NM_076467. These sequences are all either directly related to the vit-2 gene or it's a sequence from a strain from the X chromosom, all three of them found in *C.elegans *.
+The distance matrix plot of the HIT sequences. Almost a half of the sequences are identical. These identical sequenes are all part of *Caenorhabditis remanei* strain VX0007 VIT-2 (vit-2) gene. The original sequence of interest is 13_NM_001129645. Some of the similar sequences includes FO080659,X56212 and NM_076467. These sequences are all either directly related to the vit-2 gene or it's a sequence from a strain from the X chromosom, all three of them found in *C.elegans *.
 
 
-##9. Tree building 
+##9. Tree building using the Neighbour-Joining approach
 
-
-###Using the Neighbour-Joining approach
 ```{r}
 treenj<-nj(DnaDM1)
 os<-c("13_NM_001129645","11_X56212","12_NM_076467","1_FO080659")
@@ -263,10 +261,10 @@ groupOTU(njt,os)+aes(color=group) + geom_tiplab(size=3) + scale_color_manual(val
 
 #### *Figure 8.* **Neighbour joining tree**
 
-The phylogenetic tree of HIT sequences. Just as illustrated from the distance matrix plot, the sequences from *Caenorhabditis remanei* VIT-2 gene cluster together. The original sequence (13) and the three most similar sequences (1, 11, 12) are in red. 
+The phylogenetic tree of HIT sequences. Just as illustrated from the distance matrix plot, the sequences from *Caenorhabditis remanei* VIT-2 gene cluster together whereas the *C. elegans* sequences are less clustered and have more sequence varition. The original sequence (13) and the three most similar sequences (1, 11, 12) are in red. 
 
 
-###Using the Minimum Evolution approah
+##10. Tree building using the Minimum Evolution approah
 ```{r}
 treeme<-fastme.bal(DnaDM1)
 met<-ggtree(treeme)
@@ -282,8 +280,8 @@ This analysis addressed the following questions:  A) What genes are differential
 
 We found that most genes were highly expressed throughout development except vitellogenin-2 (vit-2) protein gene (C42D8.2) which is the precursor protein of egg yolk (Figure 3). This gene had low expression in the larval stages. All other genes showed minimal variation in expression between developmental stages, but there was enough of a trend to create clusters of developmental stages in a PCA plot with 47% variance on the x axis and 16% variance on the y axis (Figure 4). 
 
-Multiple alignment showed high variability between species in the first half of the sequence hits (Figure 6.1), suggesting there is not a conserved domain. However, the last half of squence hits showed a small, highly conserved domain but no common basepairs surrounding it. A heat map shows similar results with the first sequences showing lots of variation and the last sequences being highly conserved (Figure 7). 
+Multiple alignment showed high variability between *C. elegans* strains in the first half of the sequence hits (Figure 6.1), suggesting there is not a conserved domain. However, the last half of squence hits showed a small, highly conserved domain but no common basepairs surrounding it. A heat map shows similar results with the first sequences showing lots of variation and the last sequences being highly conserved (Figure 7). 
 
-A phylogenetic tree of these BLAST hits shows clustering of the sequences from *Caenorhabditis remanei* VIT-2 gene (Figure 8). This result was mostly consistent between both the neighbour joining and minimum evolution methods of tree creation (Figure 9). Although there is some differences between the two, they show almost identical orders of relation with different branch lengths. The species with highly conserved sequences are monophyletic with little evolutionary distance between them.
+A phylogenetic tree of these BLAST hits shows clustering of the sequences from *Caenorhabditis remanei* VIT-2 gene and more evolutionary distance between sequences from *C. elegans* (Figure 8). This result was mostly consistent between both the neighbour joining and minimum evolution methods of tree creation (Figure 9). Although there is some differences between the two, they show almost identical orders of relation with different branch lengths. The strains of *C. remanei* with highly conserved sequences are monophyletic with little evolutionary distance between them whereas the *C. elegans* strains are more distant.
 
-In conclusion, the genes analyzed in *C. elegans* show expression patterns consistent with their stage of development. These genes are not highly conserved among other species. Therefore, they are likely specifically required for development in *C. elegans*. 
+In conclusion, the genes analyzed in *C. elegans* show expression patterns consistent with their stage of development. These genes are not highly conserved among *C. elegans* strains. Therefore, they are likely not crucial genes under evolutionary constraint for strains of *C. elegans*, unlike the conserved domain in *C. remanei*.
